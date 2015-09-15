@@ -32,7 +32,10 @@
     },
     "autoload": {
         "psr-4": {
-            "janisto\\ycm\\utils\\": "src"
+            "vladdnepr\\ycm\\utils\\": "src"
         }
-    }
+    },
+  "extra": {
+      "bootstrap": "vladdnepr\\ycm\\utils\\Bootstrap"
+  }
 }
