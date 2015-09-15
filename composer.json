@@ -1,0 +1,38 @@
+{
+    "name": "vladdnepr/yii2-ycm",
+    "description": "YCM - Yii 2 Content Management module Utilities",
+    "keywords": ["yii2", "yii2-ycm", "admin", "administration", "module", "extension", "utils", "utilities"],
+    "homepage": "https://github.com/vladdnepr/yii2-ycm-utils",
+    "type": "yii2-extension",
+    "license": "public domain",
+    "authors": [
+        {
+            "name": "Vladislav Lyshenko",
+            "email": "vladdnepr1989@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/vladdnepr/yii2-ycm-utils/issues?state=open",
+        "source": "https://github.com/vladdnepr/yii2-ycm-utils"
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "*",
+        "yiisoft/yii2-bootstrap": "*",
+        "janisto/yii2-timepicker": "*",
+        "janisto/yii2-ycm": "*",
+        "kartik-v/yii2-grid": "~3.0",
+        "kartik-v/yii2-krajee-base": "~1.7",
+        "kartik-v/yii2-mpdf": "~1.0",
+        "kartik-v/yii2-editable": "^1.7",
+        "kartik-v/yii2-widget-select2": "~2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "janisto\\ycm\\utils\\": "src"
+        }
+    }
+}
