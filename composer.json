@@ -1,7 +1,7 @@
 {
-    "name": "vladdnepr/yii2-ycm",
+    "name": "vladdnepr/yii2-ycm-utils",
     "description": "YCM - Yii 2 Content Management module Utilities",
-    "keywords": ["yii2", "yii2-ycm", "admin", "administration", "module", "extension", "utils", "utilities"],
+    "keywords": ["yii2", "yii2-ycm", "yii2-ycm-utils", "admin", "administration", "module", "extension", "utils", "utilities"],
     "homepage": "https://github.com/vladdnepr/yii2-ycm-utils",
     "type": "yii2-extension",
     "license": "public domain",
