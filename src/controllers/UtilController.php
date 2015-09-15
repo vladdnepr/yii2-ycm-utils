@@ -26,7 +26,7 @@ use yii\web\UploadedFile;
  * @property Module $module
  * @package janisto\ycm\controllers
  */
-class ModelController extends Controller
+class UtilController extends Controller
 {
     /** @inheritdoc */
     public function behaviors()

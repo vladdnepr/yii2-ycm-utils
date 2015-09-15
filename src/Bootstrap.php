@@ -5,6 +5,7 @@ namespace vladdnepr\ycm\utils;
 use yii\base\BootstrapInterface;
 use yii\console\Application as ConsoleApplication;
 use yii\web\GroupUrlRule;
+use janisto\ycm\Module as YcmModule;
 
 class Bootstrap implements BootstrapInterface
 {
@@ -12,17 +13,22 @@ class Bootstrap implements BootstrapInterface
     public function bootstrap($app)
     {
         /** @var $module Module */
-        if ($app->hasModule('ycm-utils') && ($module = $app->getModule('ycm-utils')) instanceof Module) {
+        /** @var $ycm YcmModule */
+        if ($app->hasModule('ycm-utils')
+            && ($module = $app->getModule('ycm-utils')) instanceof Module
+            && $app->hasModule('ycm')
+            && ($ycm = $app->getModule('ycm-utils')) instanceof Module
+        ) {
             if ($app instanceof ConsoleApplication) {
                 $module->controllerNamespace = 'vladdnepr\ycm\utils\commands';
             } else {
                 $configUrlRule = [
-                    'prefix' => $module->urlPrefix,
+                    'prefix' => $ycm->urlPrefix,
                     'rules' => $module->urlRules,
                 ];
 
-                if ($module->urlPrefix != 'ycm-utils') {
-                    $configUrlRule['routePrefix'] = 'ycm-utils';
+                if ($ycm->urlPrefix != 'ycm') {
+                    $configUrlRule['routePrefix'] = 'ycm';
                 }
 
                 $app->urlManager->addRules([new GroupUrlRule($configUrlRule)], false);
