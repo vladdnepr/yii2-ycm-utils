@@ -3,6 +3,7 @@
 namespace vladdnepr\ycm\utils;
 
 use Yii;
+use janisto\ycm\Module as YcmModule;
 
 /**
  * Main module class for yii2-ycm-utils.
@@ -30,11 +31,14 @@ class Module extends \yii\base\Module
     /** @var array The default URL rules to be used in module. */
     public $urlRules = [
         '' => 'default/index',
-        'model/<action:\w+>/<name:\w+>/<pk:\d+>' => 'model/<action>',
-        'model/<action:\w+>/<name:\w+>' => 'model/<action>',
-        'model/<action:\w+>' => 'model/<action>'
+        'util/<action:\w+>/<name:\w+>/<pk:\d+>' => 'util/<action>',
+        'util/<action:\w+>/<name:\w+>' => 'util/<action>',
+        'util/<action:\w+>' => 'util/<action>'
     ];
 
+    /**
+     * @var YcmModule
+     */
     public $ycm;
 
     /**
@@ -44,7 +48,9 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
-        if (!$this->hasModule('ycm') || !($this->ycm = $this->getModule('ycm')) instanceof Module) {
+        if (!$this->module->hasModule('ycm')
+            || !($this->ycm = $this->module->getModule('ycm')) instanceof YcmModule
+        ) {
             throw new \LogicException('Please set in config YCM module');
         }
     }

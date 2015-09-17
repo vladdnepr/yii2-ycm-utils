@@ -1,30 +1,20 @@
 <?php
 
-namespace janisto\ycm\controllers;
+namespace vladdnepr\ycm\utils\controllers;
 
-use kartik\grid\GridView;
+use vladdnepr\ycm\utils\models\YcmModelUtilTrait;
 use vladdnepr\ycm\utils\Module;
 use Yii;
-use vova07\imperavi\helpers\FileHelper as RedactorFileHelper;
-use yii\base\DynamicModel;
-use yii\base\InvalidConfigException;
-use yii\data\ActiveDataProvider;
+use yii\base\NotSupportedException;
+use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\helpers\FileHelper;
-use yii\helpers\Html;
-use yii\helpers\Json;
-use yii\helpers\StringHelper;
-use yii\helpers\Url;
-use yii\web\BadRequestHttpException;
-use yii\web\Response;
-use yii\web\ServerErrorHttpException;
-use yii\web\UploadedFile;
+use VladDnepr\TraitUtils\TraitUtils;
 
 /**
  * Class ModelController
  * @property Module $module
- * @package janisto\ycm\controllers
+ * @package vladdnepr\ycm\utils\controllers
  */
 class UtilController extends Controller
 {
@@ -36,7 +26,7 @@ class UtilController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'list'],
+                        'actions' => ['choices'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
@@ -48,22 +38,43 @@ class UtilController extends Controller
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
-                'actions' => [
-                    'redactor-upload' => ['post'],
-                    'redactor-list' => ['get'],
-                    'delete' => ['get', 'post'],
-                ],
+                'actions' => [],
             ],
         ];
     }
 
-    /**
-     * Default action.
-     *
-     * @return string the rendering result.
-     */
-    public function actionIndex()
+    public function actionChoices($name, $q = null, $id = null)
     {
-        return 'test';
+        $out = ['results' => ['id' => '', 'text' => '']];
+
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        /* @var YcmModelUtilTrait|ActiveRecord $model */
+        $model = $this->module->ycm->loadModel($name);
+
+        if (!TraitUtils::contain($model, 'vladdnepr\ycm\utils\models\YcmModelUtilTrait')) {
+            throw new NotSupportedException('Model must implement YcmModelUtilTrait');
+        }
+
+        if (!is_null($q)) {
+            $out['results'] = $model->findChoicesByLabel($q);
+        } elseif ($id > 0) {
+            $out['results'] = [
+                $model->getPkColumnName() => $id,
+                'text' => $model->find($id)->getLabelColumnValue()
+            ];
+        }
+        return $out;
+    }
+
+    protected function usedTrait($object, $expected_trait_class)
+    {
+        $traits = [];
+
+        do {
+            $traits = array_merge($traits, class_uses($object));
+        } while ($object = get_parent_class($object));
+
+        return isset($traits[$expected_trait_class]);
     }
 }

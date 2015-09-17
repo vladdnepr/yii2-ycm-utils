@@ -14,10 +14,10 @@ class Bootstrap implements BootstrapInterface
     {
         /** @var $module Module */
         /** @var $ycm YcmModule */
-        if ($app->hasModule('ycm-utils')
+        if ($app->hasModule('ycm')
+            && ($ycm = $app->getModule('ycm')) instanceof YcmModule
+            && $app->hasModule('ycm-utils')
             && ($module = $app->getModule('ycm-utils')) instanceof Module
-            && $app->hasModule('ycm')
-            && ($ycm = $app->getModule('ycm-utils')) instanceof Module
         ) {
             if ($app instanceof ConsoleApplication) {
                 $module->controllerNamespace = 'vladdnepr\ycm\utils\commands';
@@ -27,8 +27,8 @@ class Bootstrap implements BootstrapInterface
                     'rules' => $module->urlRules,
                 ];
 
-                if ($ycm->urlPrefix != 'ycm') {
-                    $configUrlRule['routePrefix'] = 'ycm';
+                if ($ycm->urlPrefix != 'ycm-utils') {
+                    $configUrlRule['routePrefix'] = 'ycm-utils';
                 }
 
                 $app->urlManager->addRules([new GroupUrlRule($configUrlRule)], false);

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "25327f7a6e57b9657e749f7abe01fa5d",
+    "hash": "2ed9cd45b243604d0953634ffbd4fb37",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -877,6 +877,54 @@
                 "yii2"
             ],
             "time": "2015-09-12 19:56:48"
+        },
+        {
+            "name": "vladdnepr/trait-utils",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vladdnepr/trait-utils.git",
+                "reference": "d3ce0013a111f914306599e10b4af9e4ce937617"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vladdnepr/trait-utils/zipball/d3ce0013a111f914306599e10b4af9e4ce937617",
+                "reference": "d3ce0013a111f914306599e10b4af9e4ce937617",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "VladDnepr\\TraitUtils\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "public domain"
+            ],
+            "authors": [
+                {
+                    "name": "Vladislav Lyshenko",
+                    "email": "vladdnepr1989@gmail.com"
+                }
+            ],
+            "description": "PHP Trait Utilities",
+            "homepage": "https://github.com/vladdnepr/trait-utils",
+            "keywords": [
+                "contain",
+                "instanceof",
+                "php",
+                "trait",
+                "utilities",
+                "utils"
+            ],
+            "time": "2015-09-15 14:26:06"
         },
         {
             "name": "vova07/yii2-imperavi-widget",
