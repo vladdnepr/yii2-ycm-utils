@@ -31,7 +31,7 @@ class Bootstrap implements BootstrapInterface
                     $configUrlRule['routePrefix'] = 'ycm-utils';
                 }
 
-                $app->urlManager->addRules([new GroupUrlRule($configUrlRule)], false);
+                $app->urlManager->addRules([new GroupUrlRule($configUrlRule)]);
             }
         }
     }

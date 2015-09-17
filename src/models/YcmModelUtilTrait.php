@@ -15,7 +15,7 @@ use yii\web\JsExpression;
 trait YcmModelUtilTrait
 {
     public $ajax_enable_threshold = 20;
-    public $method_postfix_relation_choices = 'ChoicesIds';
+    public $method_postfix_relation_choices = 'IdsChoices';
     public $method_postfix_relation_ids = 'Ids';
 
     protected static $select_choices_cache;
@@ -135,14 +135,21 @@ trait YcmModelUtilTrait
          * @fixme #2 Relation is multiple, after live edit fix JS error `Cannot read property '[object Array]' of null`
          */
         return [
-            'attribute' => $relation->multiple ? $relation_name . $this->method_postfix_relation_ids  : reset($relation->link),
+            'attribute' => $relation->multiple ?
+                $relation_name . $this->method_postfix_relation_ids :
+                reset($relation->link),
             'label' => ucfirst($relation_name),
             'filter' => $modelChoices,
             'value' => $relation->multiple ?
-                function ($model) use ($relation_name) {
+                function ($model) use ($relation_name, $modelChoices) {
                     return implode(
                         ', ',
-                        array_values($model->{$relation_name . $this->method_postfix_relation_choices})
+                        array_map(
+                            function ($relation_id) use ($modelChoices) {
+                                return $modelChoices[$relation_id];
+                            },
+                            array_values($model->{$relation_name . $this->method_postfix_relation_ids})
+                        )
                     );
                 } :
                 null,
@@ -176,11 +183,14 @@ trait YcmModelUtilTrait
         ];
     }
 
-    protected function editableColumn($attribute, $options = [])
+    protected function editableColumn($attribute, $editable_type = Editable::INPUT_TEXT, $options = [])
     {
         $config = [
             'attribute' => $attribute,
             'class' => EditableColumn::className(),
+            'editableOptions' => [
+                'inputType' => $editable_type,
+            ]
         ];
 
         /* @var ActiveRecord|static $this */
@@ -188,8 +198,29 @@ trait YcmModelUtilTrait
             $config = ArrayHelper::merge($config, $this->editableRelationConfig($attribute));
         }
 
+        $editable_type_config = [];
+
+        switch ($editable_type) {
+            case Editable::INPUT_RADIO_LIST:
+                $choices = $this->{$attribute . 'Choices'}();
+                $editable_type_config = [
+                    'editableOptions' => [
+                        'options' => [
+                            'itemOptions' => [
+                                'class' => 'kv-editable-input'
+                            ],
+                            'data' => $choices,
+                        ],
+                        'data' => $choices,
+                        'displayValueConfig' => $choices,
+                    ],
+                ];
+                break;
+        }
+
         return ArrayHelper::merge(
             $config,
+            $editable_type_config,
             $options
         );
     }
@@ -200,6 +231,7 @@ trait YcmModelUtilTrait
      ****************************************************
      */
 
+    protected $relationsIds = [];
     protected $relationsChoices = [];
 
     /**
@@ -227,6 +259,7 @@ trait YcmModelUtilTrait
      */
     public function getRelationChoices($relation_name)
     {
+        /* @var ActiveRecord|static $this */
         if (!isset($this->relationsChoices[$relation_name])) {
             $this->relationsChoices[$relation_name] = [];
 
@@ -236,16 +269,41 @@ trait YcmModelUtilTrait
                 $relation_class = $relation->modelClass;
 
                 if (TraitUtils::contain($relation_class, 'vladdnepr\ycm\utils\models\YcmModelUtilTrait')) {
-                    $this->relationsChoices[$relation_name] = ArrayHelper::map(
-                        parent::__get($relation_name),
-                        $relation_class::getPkColumnName(),
-                        $relation_class::getLabelColumnName()
-                    );
+                    $this->relationsChoices[$relation_name] = $relation_class::getSelectChoices();
                 }
             }
         }
 
         return $this->relationsChoices[$relation_name];
+    }
+
+    /**
+     * Get available relation ids
+     * @param $relation_name
+     * @return mixed
+     */
+    public function getRelationIds($relation_name)
+    {
+        /* @var ActiveRecord|static $this */
+        if (!isset($this->relationsIds[$relation_name])) {
+            $this->relationsIds[$relation_name] = [];
+
+            $relation = $this->getRelation($relation_name, false);
+
+            if ($relation) {
+                $relation_class = $relation->modelClass;
+
+                if (TraitUtils::contain($relation_class, 'vladdnepr\ycm\utils\models\YcmModelUtilTrait')) {
+                    $this->relationsIds[$relation_name] = ArrayHelper::map(
+                        parent::__get($relation_name),
+                        $relation_class::getPkColumnName(),
+                        $relation_class::getPkColumnName()
+                    );
+                }
+            }
+        }
+
+        return $this->relationsIds[$relation_name];
     }
 
     /**
@@ -263,12 +321,7 @@ trait YcmModelUtilTrait
         ) {
             $result = $this->getRelationChoices($relation_name);
         } elseif ($relation_name = $this->getRelationNameWithoutPostfix($name, $this->method_postfix_relation_ids)) {
-            $result = array_combine(
-                array_keys($this->getRelationChoices($relation_name)),
-                array_keys($this->getRelationChoices($relation_name))
-            );
-
-            $result = $result ?: null;
+            $result = $this->getRelationIds($relation_name) ?: null;
         } else {
             $result = parent::__get($name);
         }
