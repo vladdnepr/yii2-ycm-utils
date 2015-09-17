@@ -148,7 +148,7 @@ trait YcmModelUtilTrait
                             function ($relation_id) use ($modelChoices) {
                                 return $modelChoices[$relation_id];
                             },
-                            array_values($model->{$relation_name . $this->method_postfix_relation_ids})
+                            array_values((array)$model->{$relation_name . $this->method_postfix_relation_ids})
                         )
                     );
                 } :
