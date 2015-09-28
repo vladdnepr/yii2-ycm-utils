@@ -2,6 +2,7 @@
 
 namespace vladdnepr\ycm\utils\controllers;
 
+use vladdnepr\ycm\utils\helpers\ModelHelper;
 use vladdnepr\ycm\utils\models\YcmModelUtilTrait;
 use vladdnepr\ycm\utils\Module;
 use Yii;
@@ -57,11 +58,11 @@ class UtilController extends Controller
         }
 
         if (!is_null($q)) {
-            $out['results'] = $model->findChoicesByLabel($q);
+            $out['results'] = ModelHelper::findChoicesByLabel($model, $q);
         } elseif ($id > 0) {
             $out['results'] = [
-                $model->getPkColumnName() => $id,
-                'text' => $model->find($id)->getLabelColumnValue()
+                ModelHelper::getPkColumnName($model) => $id,
+                'text' => ModelHelper::getLabelColumnName($model->findOne($id))
             ];
         }
         return $out;

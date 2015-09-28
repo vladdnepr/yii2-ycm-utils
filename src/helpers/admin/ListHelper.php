@@ -1,11 +1,14 @@
 <?php
 
-namespace vladdnepr\ycm\utils\helpers;
+namespace vladdnepr\ycm\utils\helpers\admin;
 
 use kartik\date\DatePicker;
 use kartik\editable\Editable;
+use kartik\grid\CheckboxColumn;
 use kartik\grid\EditableColumn;
 use kartik\select2\Select2;
+use vladdnepr\ycm\utils\helpers\ModelHelper;
+use vladdnepr\ycm\utils\helpers\RelationHelper;
 use vladdnepr\ycm\utils\models\YcmModelUtilTrait;
 use vladdnepr\ycm\utils\Module;
 use yii\db\ActiveRecord;
@@ -20,12 +23,11 @@ class ListHelper
     static private $widgetEditableTypeMap = [
         Editable::INPUT_DATE => 'date',
         Editable::INPUT_DATETIME => 'date',
+        Editable::INPUT_CHECKBOX => 'boolean',
     ];
 
     public static function date(ActiveRecord $model, $attribute, $options = [])
     {
-        /* @var ActiveRecord|YcmModelUtilTrait $model */
-
         $config = [
             'attribute' => $attribute,
             'format' => ['datetime', 'php:' . self::MYSQL_DATETIME_FORMAT],
@@ -44,6 +46,41 @@ class ListHelper
         );
     }
 
+    public static function boolean(ActiveRecord $model, $attribute, $options = [])
+    {
+        $config = ArrayHelper::merge(
+            [
+                'class' => \kartik\grid\BooleanColumn::className(),
+                'attribute' => $attribute,
+                'trueLabel' => 'Yes',
+                'falseLabel' => 'No',
+            ],
+            self::selectWidgetFilterConfig([0 => 'No', 1 => 'Yes'])
+        );
+
+        return ArrayHelper::merge(
+            $config,
+            $options
+        );
+    }
+
+    public static function enumerate(ActiveRecord $model, $attribute, $options = [])
+    {
+        $choices = ModelHelper::getEnumChoices($model, $attribute);
+
+        $config = ArrayHelper::merge(
+            [
+                'attribute' => $attribute,
+            ],
+            self::selectWidgetFilterConfig($choices)
+        );
+
+        return ArrayHelper::merge(
+            $config,
+            $options
+        );
+    }
+
     public static function relation(ActiveRecord $model, $relation_name, $options = [])
     {
         /* @var ActiveRecord|YcmModelUtilTrait $model */
@@ -54,18 +91,13 @@ class ListHelper
             ) :
             $relation_name;
 
-        $config = [
-            'label' => $label,
-            'attribute' => $relation_name,
-            'filterWidgetOptions' => [
-                'data' => $model->getRelationChoices($relation_name),
-                'pluginOptions' => [
-                    'allowClear' => true,
-                    'placeholder' => 'Select...'
-                ],
+        $config = ArrayHelper::merge(
+            [
+                'label' => $label,
+                'attribute' => $relation_name,
             ],
-            'filterType' => Select2::className()
-        ];
+            self::selectWidgetFilterConfig(RelationHelper::getSelectChoices($model, $relation_name))
+        );
 
         return ArrayHelper::merge(
             $config,
@@ -79,54 +111,63 @@ class ListHelper
         $editable_type = Editable::INPUT_TEXT,
         $options = []
     ) {
+        // Init config
         $config = [
             'attribute' => $attribute,
             'class' => EditableColumn::className(),
             'editableOptions' => [
-                'inputType' => $editable_type,
-                /*'placement' => PopoverX::ALIGN_LEFT*/
+                'inputType' => $editable_type
             ]
         ];
 
+        // Add inner widget config if available
         if (isset(self::$widgetEditableTypeMap[$editable_type])) {
             $typeMethod = self::$widgetEditableTypeMap[$editable_type];
-            $config = ArrayHelper::merge(
-                $config,
-                self::$typeMethod($model, $attribute)
-            );
+            $config['editableOptions']['options'] = self::$typeMethod($model, $attribute);
         }
 
-        /* @var ActiveRecord|YcmModelUtilTrait $model */
+        // Add relation config if available
         if ($model->getRelation($attribute, false)) {
             $config = ArrayHelper::merge(
                 $config,
+                self::relation($model, $attribute),
                 self::editableRelationConfig($model, $attribute)
             );
         }
 
-        $editable_type_config = [];
 
-        switch ($editable_type) {
-            case Editable::INPUT_RADIO_LIST:
-                $choices = $model->{$attribute . 'Choices'}();
-                $editable_type_config = [
+        // Check from db selectable type
+        if ($choices = ModelHelper::getBooleanChoices($model, $attribute)) {
+            $config = ArrayHelper::merge(
+                $config,
+                [
                     'editableOptions' => [
                         'options' => [
-                            'itemOptions' => [
-                                'class' => 'kv-editable-input'
-                            ],
                             'data' => $choices,
                         ],
-                        'data' => $choices,
                         'displayValueConfig' => $choices,
                     ],
-                ];
-                break;
+                ],
+                self::selectWidgetFilterConfig($choices)
+            );
+        } elseif ($choices = ModelHelper::getEnumChoices($model, $attribute)) {
+            $config = ArrayHelper::merge(
+                $config,
+                [
+                    'editableOptions' => [
+                        'inputType' => Editable::INPUT_SELECT2,
+                        'options' => [
+                            'data' => $choices,
+                        ],
+                        'displayValueConfig' => $choices,
+                    ],
+                ],
+                self::selectWidgetFilterConfig($choices)
+            );
         }
 
         return ArrayHelper::merge(
             $config,
-            $editable_type_config,
             $options
         );
     }
@@ -142,7 +183,7 @@ class ListHelper
         /* @var ActiveRecord|YcmModelUtilTrait $relationModel */
         $relationModel = \Yii::createObject($relation->modelClass);
 
-        $modelChoices = $relationModel->getSelectChoices();
+        $modelChoices = ModelHelper::getSelectChoices($relationModel);
 
         /**
          * @todo #1 implement fill ajax loading with ajax mapping
@@ -194,6 +235,20 @@ class ListHelper
                 ],
                 'displayValueConfig' => !$relation->multiple ? $modelChoices : null,
             ],
+        ];
+    }
+
+    protected static function selectWidgetFilterConfig($choices)
+    {
+        return [
+            'filterWidgetOptions' => [
+                'data' => $choices,
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'placeholder' => '✍'
+                ],
+            ],
+            'filterType' => Select2::className()
         ];
     }
 }

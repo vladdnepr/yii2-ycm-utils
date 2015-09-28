@@ -1,11 +1,10 @@
 <?php
 namespace vladdnepr\ycm\utils\models;
 
-use VladDnepr\TraitUtils\TraitUtils;
+use vladdnepr\ycm\utils\helpers\ModelHelper;
+use vladdnepr\ycm\utils\helpers\RelationHelper;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\db\Query;
-use yii\db\TableSchema;
 use yii\helpers\ArrayHelper;
 
 trait YcmModelUtilTrait
@@ -15,117 +14,11 @@ trait YcmModelUtilTrait
     public $method_postfix_relation_ids = 'Ids';
     public $relations_delimeter = '.';
 
-    protected static $select_choices_cache;
-    protected static $label_columns_cache;
-
-    protected static $label_column_default = ['title', 'name', 'id'];
-
     protected static $dates_to_cache;
 
     protected static $relations_cache;
 
-    /**
-     * Get Choices
-     * @return array Key - primary key value, value - label column value
-     */
-    public static function getSelectChoices()
-    {
-        $title_column_name = self::getLabelColumnName();
-        $pk_column_name = self::getPkColumnName();
-        /* @var ActiveRecord|static $this */
-        $key = self::className().$title_column_name.$pk_column_name;
-
-        if (!isset(self::$select_choices_cache[$key])) {
-            self::$select_choices_cache[$key] = ArrayHelper::map(
-                self::find()->orderBy($title_column_name . ' ASC')->all(),
-                $pk_column_name,
-                $title_column_name
-            );
-        }
-
-        return self::$select_choices_cache[$key];
-    }
-
-    /**
-     * Get label column name
-     * @return mixed
-     */
-    public static function getLabelColumnName()
-    {
-        $class = get_called_class();
-
-        if (!isset(self::$label_columns_cache[$class])) {
-            /* @var TableSchema $schema */
-            $schema = static::getTableSchema();
-            $available_names = array_intersect(static::$label_column_default, $schema->getColumnNames());
-
-            self::$label_columns_cache[$class] = reset($available_names);
-        }
-
-        return self::$label_columns_cache[$class];
-    }
-
-    /**
-     * Get label column value
-     * @return array|null
-     */
-    public function getLabelColumnValue()
-    {
-        return $this->{self::getLabelColumnName()};
-    }
-
-    /**
-     * Get PK column name
-     * @return mixed
-     */
-    public static function getPkColumnName()
-    {
-        /* @var ActiveRecord|static $this */
-        return static::getTableSchema()->primaryKey[0];
-    }
-
-    /**
-     * Find model by label value
-     * @param $label
-     * @return null|static
-     */
-    public function findByLabel($label)
-    {
-        /* @var ActiveRecord|static $this */
-        return $this->findOne([self::getLabelColumnName() => $label]);
-    }
-
-    /**
-     * Find choices by label value
-     * @param $label
-     * @param int $limit
-     * @return array
-     */
-    public function findChoicesByLabel($label, $limit = 20)
-    {
-        /* @var ActiveRecord|static $this */
-        $pk_column = self::getPkColumnName();
-        $label_column = self::getLabelColumnName();
-
-        $query = new Query();
-        $query->select($pk_column . ' as id, ' . $label_column .' AS text')
-            ->from($this->tableName())
-            ->where($label_column . ' LIKE "%' . $label .'%"')
-            ->limit($limit);
-
-        $command = $query->createCommand();
-
-        return array_values($command->queryAll());
-    }
-
-    /**
-     ****************************************************
-     * Below functionality about Editable Relations
-     ****************************************************
-     */
-
     protected $relationsIds = [];
-    protected $relationsChoices = [];
     protected $relationsHasManyValues = [];
 
     /**
@@ -147,31 +40,6 @@ trait YcmModelUtilTrait
     }
 
     /**
-     * Get available relation choices
-     * @param $relation_name
-     * @return mixed
-     */
-    public function getRelationChoices($relation_name)
-    {
-        /* @var ActiveRecord|static $this */
-        if (!isset($this->relationsChoices[$relation_name])) {
-            $this->relationsChoices[$relation_name] = [];
-
-            $relation = $this->getRelation($relation_name, false);
-
-            if ($relation) {
-                $relation_class = $relation->modelClass;
-
-                if (TraitUtils::contain($relation_class, 'vladdnepr\ycm\utils\models\YcmModelUtilTrait')) {
-                    $this->relationsChoices[$relation_name] = $relation_class::getSelectChoices();
-                }
-            }
-        }
-
-        return $this->relationsChoices[$relation_name];
-    }
-
-    /**
      * Get available relation ids
      * @param $relation_name
      * @return mixed
@@ -182,18 +50,17 @@ trait YcmModelUtilTrait
         if (!isset($this->relationsIds[$relation_name])) {
             $this->relationsIds[$relation_name] = [];
 
-            $relation = $this->getRelation($relation_name, false);
+            $relation = $this->getRelation($relation_name);
 
             if ($relation) {
-                $relation_class = $relation->modelClass;
+                $relationModel = new $relation->modelClass;
 
-                if (TraitUtils::contain($relation_class, 'vladdnepr\ycm\utils\models\YcmModelUtilTrait')) {
-                    $this->relationsIds[$relation_name] = ArrayHelper::map(
-                        parent::__get($relation_name),
-                        $relation_class::getPkColumnName(),
-                        $relation_class::getPkColumnName()
-                    );
-                }
+                $this->relationsIds[$relation_name] = ArrayHelper::map(
+                    parent::__get($relation_name),
+                    ModelHelper::getPkColumnName($relationModel),
+                    ModelHelper::getPkColumnName($relationModel)
+                );
+
             }
         }
 
@@ -223,10 +90,9 @@ trait YcmModelUtilTrait
         } elseif (($relation_name = $this->getAttributeNameWithoutPostfix(
             $name,
             $this->method_postfix_relation_choices
-        )) || ($relation_name = $this->getAttributeNameWithoutPostfix($name, 'Choices'))
-        ) {
+        ))) {
             // Handle relation Choices
-            $result = $this->getRelationChoices($relation_name);
+            $result = RelationHelper::getSelectChoices($this, $relation_name);
         } elseif ($relation_name = $this->getAttributeNameWithoutPostfix($name, $this->method_postfix_relation_ids)) {
             // Handle relation Ids
             $result = $this->getRelationIds($relation_name) ?: null;
@@ -336,6 +202,7 @@ trait YcmModelUtilTrait
 
     function __toString()
     {
-        return $this->getLabelColumnValue();
+        /* @var ActiveRecord|static $this */
+        return ModelHelper::getLabelColumnValue($this);
     }
 }

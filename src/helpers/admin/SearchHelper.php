@@ -1,7 +1,8 @@
 <?php
 
-namespace vladdnepr\ycm\utils\helpers;
+namespace vladdnepr\ycm\utils\helpers\admin;
 
+use vladdnepr\ycm\utils\helpers\ModelHelper;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -44,7 +45,23 @@ class SearchHelper
         $relationField = $relationClass::tableName() . '.' .
             ($relation->multiple ? array_values($relation->link)[0] : array_keys($relation->link)[0]);
 
+        $relationValue = $model->$relation_name;
+
+        if ($relationValue instanceof ActiveRecord) {
+            $relationValue = ModelHelper::getPkColumnValue($relationValue);
+        }
+
         $query->joinWith($relation_name)
-            ->andFilterWhere([$relationField => $model->$relation_name]);
+            ->andFilterWhere([$relationField => $relationValue]);
+    }
+
+    public static function like(ActiveQuery $query, ActiveRecord $model, $attribute)
+    {
+        $query->andFilterWhere(['like', $model->tableName() .'.' . $attribute, $model->$attribute]);
+    }
+
+    public static function equal(ActiveQuery $query, ActiveRecord $model, $attribute)
+    {
+        $query->andFilterWhere([$attribute => $model->$attribute]);
     }
 }
