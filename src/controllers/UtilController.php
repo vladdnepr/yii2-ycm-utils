@@ -11,6 +11,9 @@ use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use VladDnepr\TraitUtils\TraitUtils;
+use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\web\BadRequestHttpException;
 
 /**
  * Class ModelController
@@ -27,7 +30,6 @@ class UtilController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['choices'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
@@ -68,14 +70,30 @@ class UtilController extends Controller
         return $out;
     }
 
-    protected function usedTrait($object, $expected_trait_class)
+    public function actionEditable($name)
     {
-        $traits = [];
+        /** @var $model \yii\db\ActiveRecord */
+        $model = $this->module->ycm->loadModel($name);
 
-        do {
-            $traits = array_merge($traits, class_uses($object));
-        } while ($object = get_parent_class($object));
+        if (!\Yii::$app->request->post('hasEditable')) {
+            throw new BadRequestHttpException;
+        }
 
-        return isset($traits[$expected_trait_class]);
+        $output = '';
+        $message = '';
+
+        $model = $model->findOne(\Yii::$app->request->post('editableKey'));
+
+        $modelShortName = $model->formName();
+        $post = \Yii::$app->request->post($modelShortName);
+        $modelAttributes = current($post);
+
+        if ($model->load([$modelShortName => $modelAttributes])) {
+            if (!$model->save()) {
+                $message = Html::errorSummary($model);
+            }
+        }
+
+        return Json::encode(['output' => $output, 'message' => $message]);
     }
 }

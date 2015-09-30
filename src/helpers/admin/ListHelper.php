@@ -111,12 +111,20 @@ class ListHelper
         $editable_type = Editable::INPUT_TEXT,
         $options = []
     ) {
+        /* @var Module $module */
+        $module = \Yii::$app->getModule('ycm-utils');
         // Init config
         $config = [
             'attribute' => $attribute,
             'class' => EditableColumn::className(),
             'editableOptions' => [
-                'inputType' => $editable_type
+                'inputType' => $editable_type,
+                'ajaxSettings'=>[
+                    'url'=> Url::to([
+                        '/ycm-utils/util/editable',
+                        'name' => $module->ycm->getModelName($model)
+                    ]),
+                ],
             ]
         ];
 
