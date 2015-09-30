@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5743d73057bb596bd836d1fff918749f",
+    "hash": "04d044b1930262986ae38cdd81f1b9d6",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -227,34 +227,6 @@
             }
         },
         {
-            "name": "bower-asset/select2",
-            "version": "3.5.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/select2/select2.git",
-                "reference": "95a977f674b6938af55ec5f28b7772df93786c5c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/select2/select2/zipball/95a977f674b6938af55ec5f28b7772df93786c5c",
-                "reference": "95a977f674b6938af55ec5f28b7772df93786c5c",
-                "shasum": ""
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.7.1"
-            },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "select2.js",
-                    "select2.css",
-                    "select2.png",
-                    "select2x2.png",
-                    "select2-spinner.gif"
-                ]
-            }
-        },
-        {
             "name": "bower-asset/yii2-pjax",
             "version": "v2.0.4",
             "source": {
@@ -448,67 +420,6 @@
                 "yii2"
             ],
             "time": "2015-06-26 08:39:12"
-        },
-        {
-            "name": "janisto/yii2-ycm",
-            "version": "0.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/janisto/yii2-ycm.git",
-                "reference": "39fb5ca2898d5de0134451d1c08ee84404b74e8a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/janisto/yii2-ycm/zipball/39fb5ca2898d5de0134451d1c08ee84404b74e8a",
-                "reference": "39fb5ca2898d5de0134451d1c08ee84404b74e8a",
-                "shasum": ""
-            },
-            "require": {
-                "janisto/yii2-timepicker": "*",
-                "php": ">=5.4.0",
-                "vova07/yii2-imperavi-widget": "*",
-                "vova07/yii2-select2-widget": "*",
-                "yiisoft/yii2": "*",
-                "yiisoft/yii2-bootstrap": "*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.5",
-                "scrutinizer/ocular": "~1.1"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "bootstrap": "janisto\\ycm\\Bootstrap",
-                "asset-installer-paths": {
-                    "npm-asset-library": "vendor/npm",
-                    "bower-asset-library": "vendor/bower"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "janisto\\ycm\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "public domain"
-            ],
-            "authors": [
-                {
-                    "name": "Jani Mikkonen",
-                    "email": "janisto@php.net"
-                }
-            ],
-            "description": "YCM - Yii 2 Content Management module",
-            "homepage": "https://github.com/janisto/yii2-ycm",
-            "keywords": [
-                "admin",
-                "administration",
-                "extension",
-                "module",
-                "yii2",
-                "yii2-ycm"
-            ],
-            "time": "2015-09-08 11:14:45"
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
@@ -829,16 +740,16 @@
         },
         {
             "name": "kartik-v/yii2-grid",
-            "version": "v3.0.6",
+            "version": "v3.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-grid.git",
-                "reference": "5e5229fd7ea30d65cdde15db073ea8cb1a39be68"
+                "reference": "913fde8fbe41bf998d53a88d0443e25e1e696194"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/5e5229fd7ea30d65cdde15db073ea8cb1a39be68",
-                "reference": "5e5229fd7ea30d65cdde15db073ea8cb1a39be68",
+                "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/913fde8fbe41bf998d53a88d0443e25e1e696194",
+                "reference": "913fde8fbe41bf998d53a88d0443e25e1e696194",
                 "shasum": ""
             },
             "require": {
@@ -869,7 +780,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-07-14 19:20:52"
+            "time": "2015-09-12 19:41:22"
         },
         {
             "name": "kartik-v/yii2-krajee-base",
@@ -2006,130 +1917,6 @@
             "time": "2015-09-15 14:26:06"
         },
         {
-            "name": "vova07/yii2-imperavi-widget",
-            "version": "1.2.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/vova07/yii2-imperavi-widget.git",
-                "reference": "afb59bff9a4ce18f5ecd144cf1fe224bf939ec15"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/vova07/yii2-imperavi-widget/zipball/afb59bff9a4ce18f5ecd144cf1fe224bf939ec15",
-                "reference": "afb59bff9a4ce18f5ecd144cf1fe224bf939ec15",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "require-dev": {
-                "mikey179/vfsstream": "~1",
-                "phpunit/phpunit": "4.*",
-                "scrutinizer/ocular": "~1.1"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                },
-                "asset-installer-paths": {
-                    "bower-asset-library": "vendor/bower"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "vova07\\imperavi\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Crudu Vasile",
-                    "email": "bazillio07@yandex.ru",
-                    "homepage": "https://github.com/vova07",
-                    "role": "Developer"
-                }
-            ],
-            "description": "The imperavi redactor widget for Yii 2 framework.",
-            "homepage": "https://github.com/vova07/yii2-imperavi-widget",
-            "keywords": [
-                "Redactor",
-                "extension",
-                "imperavi",
-                "widget",
-                "wysiwyg",
-                "yii",
-                "yii 2",
-                "yii2"
-            ],
-            "time": "2015-08-21 11:36:17"
-        },
-        {
-            "name": "vova07/yii2-select2-widget",
-            "version": "0.1.2",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:vova07/yii2-select2-widget.git",
-                "reference": "4f7a7702b6b8bf1007f153b3f2fdc10e02af3117"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/vova07/yii2-select2-widget/zipball/4f7a7702b6b8bf1007f153b3f2fdc10e02af3117",
-                "reference": "4f7a7702b6b8bf1007f153b3f2fdc10e02af3117",
-                "shasum": ""
-            },
-            "require": {
-                "bower-asset/select2": "3.*",
-                "yiisoft/yii2": "*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.*",
-                "scrutinizer/ocular": "~1.1"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.0.x-dev"
-                },
-                "asset-installer-paths": {
-                    "bower-asset-library": "vendor/bower"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "vova07\\select2\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Crudu Vasile",
-                    "email": "bazillio07@yandex.ru",
-                    "homepage": "https://github.com/vova07",
-                    "role": "Developer"
-                }
-            ],
-            "description": "The select2 widget for Yii framework.",
-            "homepage": "https://github.com/vova07/yii2-select2-widget",
-            "keywords": [
-                "extension",
-                "select",
-                "select 2",
-                "select2",
-                "widget",
-                "yii",
-                "yii 2",
-                "yii2"
-            ],
-            "time": "2015-04-05 21:07:23"
-        },
-        {
             "name": "yiisoft/yii2",
             "version": "2.0.6",
             "source": {
@@ -2219,21 +2006,21 @@
         },
         {
             "name": "yiisoft/yii2-bootstrap",
-            "version": "2.0.4",
+            "version": "2.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-bootstrap.git",
-                "reference": "1b6b1e61cf91c3cdd517d6a7e71d30bb212e4af0"
+                "reference": "1464f93834b1d5edb1f5625f7ffd6c3723fa4923"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap/zipball/1b6b1e61cf91c3cdd517d6a7e71d30bb212e4af0",
-                "reference": "1b6b1e61cf91c3cdd517d6a7e71d30bb212e4af0",
+                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap/zipball/1464f93834b1d5edb1f5625f7ffd6c3723fa4923",
+                "reference": "1464f93834b1d5edb1f5625f7ffd6c3723fa4923",
                 "shasum": ""
             },
             "require": {
                 "bower-asset/bootstrap": "3.3.* | 3.2.* | 3.1.*",
-                "yiisoft/yii2": ">=2.0.4"
+                "yiisoft/yii2": ">=2.0.6"
             },
             "type": "yii2-extension",
             "extra": {
@@ -2265,7 +2052,7 @@
                 "bootstrap",
                 "yii2"
             ],
-            "time": "2015-05-10 22:08:17"
+            "time": "2015-09-23 17:48:24"
         },
         {
             "name": "yiisoft/yii2-composer",
@@ -2419,55 +2206,6 @@
                 "instantiate"
             ],
             "time": "2015-06-14 21:17:01"
-        },
-        {
-            "name": "kartik-v/yii2-date-range",
-            "version": "v1.6.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kartik-v/yii2-date-range.git",
-                "reference": "fcfd163d5c1e2f299eb5f47e1aa487a86dfe56bd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-date-range/zipball/fcfd163d5c1e2f299eb5f47e1aa487a86dfe56bd",
-                "reference": "fcfd163d5c1e2f299eb5f47e1aa487a86dfe56bd",
-                "shasum": ""
-            },
-            "require": {
-                "kartik-v/yii2-krajee-base": "*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "kartik\\daterange\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Kartik Visweswaran",
-                    "email": "kartikv2@gmail.com",
-                    "homepage": "http://www.krajee.com/"
-                }
-            ],
-            "description": "An advanced Yii 2 date range picker input for based on bootstrap-daterangepicker plugin.",
-            "homepage": "https://github.com/kartik-v/yii2-date-range",
-            "keywords": [
-                "bootstrap",
-                "bootstrap 3",
-                "date",
-                "date-range",
-                "extension",
-                "range",
-                "time",
-                "widget",
-                "yii2"
-            ],
-            "time": "2015-05-22 15:26:20"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -2820,16 +2558,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.7",
+            "version": "4.8.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "dab2ada9e9a503d2ec3c32fe0fb59dea9bdd9dfa"
+                "reference": "73fad41adb5b7bc3a494bb930d90648df1d5e74b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/dab2ada9e9a503d2ec3c32fe0fb59dea9bdd9dfa",
-                "reference": "dab2ada9e9a503d2ec3c32fe0fb59dea9bdd9dfa",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/73fad41adb5b7bc3a494bb930d90648df1d5e74b",
+                "reference": "73fad41adb5b7bc3a494bb930d90648df1d5e74b",
                 "shasum": ""
             },
             "require": {
@@ -2888,7 +2626,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-09-14 06:57:22"
+            "time": "2015-09-20 12:56:44"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -3319,16 +3057,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.7.4",
+            "version": "v2.7.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Yaml.git",
-                "reference": "2dc7b06c065df96cc686c66da2705e5e18aef661"
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "31cb2ad0155c95b88ee55fe12bc7ff92232c1770"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/2dc7b06c065df96cc686c66da2705e5e18aef661",
-                "reference": "2dc7b06c065df96cc686c66da2705e5e18aef661",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/31cb2ad0155c95b88ee55fe12bc7ff92232c1770",
+                "reference": "31cb2ad0155c95b88ee55fe12bc7ff92232c1770",
                 "shasum": ""
             },
             "require": {
@@ -3364,7 +3102,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2015-08-24 07:13:45"
+            "time": "2015-09-14 14:14:09"
         }
     ],
     "aliases": [],

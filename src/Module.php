@@ -3,7 +3,7 @@
 namespace vladdnepr\ycm\utils;
 
 use Yii;
-use janisto\ycm\Module as YcmModule;
+use vladdnepr\ycm\Module as YcmModule;
 
 /**
  * Main module class for yii2-ycm-utils.

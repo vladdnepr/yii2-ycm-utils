@@ -5,7 +5,7 @@ namespace vladdnepr\ycm\utils;
 use yii\base\BootstrapInterface;
 use yii\console\Application as ConsoleApplication;
 use yii\web\GroupUrlRule;
-use janisto\ycm\Module as YcmModule;
+use vladdnepr\ycm\Module as YcmModule;
 
 class Bootstrap implements BootstrapInterface
 {

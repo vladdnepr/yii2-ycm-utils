@@ -20,7 +20,6 @@
         "yiisoft/yii2": "*",
         "yiisoft/yii2-bootstrap": "*",
         "janisto/yii2-timepicker": "*",
-        "janisto/yii2-ycm": "*",
         "kartik-v/yii2-grid": "~3.0",
         "kartik-v/yii2-krajee-base": "~1.7",
         "kartik-v/yii2-mpdf": "~1.0",
