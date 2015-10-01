@@ -121,7 +121,7 @@ class ListHelper
                 'inputType' => $editable_type,
                 'ajaxSettings'=>[
                     'url'=> Url::to([
-                        '/ycm-utils/util/editable',
+                        '/ycm/model/editable',
                         'name' => $module->ycm->getModelName($model)
                     ]),
                 ],
@@ -230,7 +230,7 @@ class ListHelper
                             'minimumInputLength' => 3,
                             'ajax' => [
                                 'url' => Url::to([
-                                    '/ycm-utils/util/choices',
+                                    '/ycm/model/choices',
                                     'name' => $module->ycm->getModelName($relationModel)
                                 ]),
                                 'dataType' => 'json',
