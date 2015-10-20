@@ -15,10 +15,9 @@ class EditHelper
     {
         /* @var ActiveRecord|YcmModelUtilTrait $model */
         $relation = $model->getRelation($relation_name);
-        $relationField = $relation->multiple ? array_keys($relation->link)[0] : array_values($relation->link)[0];
 
         $config = [
-            $relationField,
+            $relation_name,
             'widget',
             'widgetClass' => Select2::className(),
             'data' => RelationHelper::getSelectChoices($model, $relation_name),

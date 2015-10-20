@@ -14,8 +14,6 @@ trait YcmModelUtilTrait
     public $method_postfix_relation_ids = 'Ids';
     public $relations_delimeter = '.';
 
-    protected static $dates_to_cache;
-
     protected static $relations_cache;
 
     protected $relationsIds = [];
@@ -77,26 +75,24 @@ trait YcmModelUtilTrait
     {
         $result = null;
 
-        if ($attrubute = $this->getAttributeNameWithoutPostfix($name, '_to')) {
-            //Date and DateTime handle
-            $result = isset(self::$dates_to_cache[$attrubute]) ? self::$dates_to_cache[$attrubute] : null;
-        } elseif (strpos($name, $this->relations_delimeter) !== false) {
+        if (strpos($name, $this->relations_delimeter) !== false) {
             // Relation access via dot
             $result = ArrayHelper::getValue(
                 $this,
                 $name,
                 isset(self::$relations_cache[$name]) ? self::$relations_cache[$name] : null
             );
-        } elseif (($relation_name = $this->getAttributeNameWithoutPostfix(
+        } /*elseif (($relation_name = $this->getAttributeNameWithoutPostfix(
             $name,
             $this->method_postfix_relation_choices
         ))) {
             // Handle relation Choices
-            $result = RelationHelper::getSelectChoices($this, $relation_name);
-        } elseif ($relation_name = $this->getAttributeNameWithoutPostfix($name, $this->method_postfix_relation_ids)) {
+            $r=1;
+            //$result = RelationHelper::getSelectChoices($this, $relation_name);
+        }*/ /*elseif ($relation_name = $this->getAttributeNameWithoutPostfix($name, $this->method_postfix_relation_ids)) {
             // Handle relation Ids
             $result = $this->getRelationIds($relation_name) ?: null;
-        } else {
+        }*/ else {
             $result = parent::__get($name);
 
             if (!$result && isset(self::$relations_cache[$name])) {
@@ -148,8 +144,6 @@ trait YcmModelUtilTrait
     {
         if (strpos($name, $this->relations_delimeter) !== false || $this->getRelation($name, false)) {
             self::$relations_cache[$name] = $value;
-        } elseif ($attrubute = $this->getAttributeNameWithoutPostfix($name, '_to')) {
-            self::$dates_to_cache[$attrubute] = $value;
         } elseif (($relation_name = $this->getAttributeNameWithoutPostfix($name, $this->method_postfix_relation_ids))
             && $this->isRelationMultiple($relation_name)
         ) {

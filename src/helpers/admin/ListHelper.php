@@ -34,7 +34,6 @@ class ListHelper
             'options' => ['style' => 'width:240px'],
             'filterWidgetOptions' => [
                 'type' => DatePicker::TYPE_RANGE,
-                'attribute' => $attribute . '_from',
                 'attribute2' => $attribute . '_to',
             ],
             'filterType' => DatePicker::className()
