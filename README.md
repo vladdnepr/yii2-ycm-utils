@@ -1,3 +1,5 @@
+# DEPRECATED REPOSITORY. See https://github.com/vladdnepr/yii2-ycm
+
 # Yii 2 YCM Utilities
 
 YCM Utils - Yii 2 Content Management module Utilities
